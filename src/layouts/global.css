@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme inline {
+	--font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+	"Courier New", monospace;
+}
+
+@layer base {
+	body {
+		@apply font-mono;
+		@apply text-gray-900;
+	}
+}

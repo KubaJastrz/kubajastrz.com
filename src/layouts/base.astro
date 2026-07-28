@@ -1,0 +1,15 @@
+---
+import "./global.css";
+import { Font } from "astro:assets";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<slot name="head" />
+		<Font cssVariable="--font-geist-mono" preload />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

@@ -1,7 +1,171 @@
 ---
-import Layout from "../layouts/layout.astro";
+import Head from "../components/head/base-head.astro";
+import ObfuscatedEmailLink from "../components/obfuscated-email-link.astro";
+import Layout from "../layouts/base.astro";
+
+const social = {
+	github: {
+		handle: "@kubajastrz",
+		href: "https://github.com/KubaJastrz",
+	},
+	x: {
+		handle: "@kuba_jastrz",
+		href: "https://x.com/kuba_jastrz",
+	},
+	linkedin: {
+		handle: "kubajastrz",
+		href: "https://linkedin.com/in/kuba-jastrz/",
+	},
+};
+
+const linkClass = "underline-offset-4 hover:opacity-60";
 ---
 
 <Layout>
-	<h1>kuba jastrz</h1>
+	<Head
+		slot="head"
+		title="Kuba Jastrzębski"
+		description="Product engineer from Poland, working on web apps, infra and oss tooling."
+	/>
+
+	<main class="mx-auto max-w-3xl px-6 py-12 pb-16 text-base leading-relaxed">
+		<header>
+			<h1 class="mb-4 text-[1.75rem] font-semibold lowercase tracking-tight">
+				<noscript>kuba jastrzębski</noscript>
+				<span class="jsonly">kuba jastrzębski</span>
+			</h1>
+
+			<p class="mb-5 flex flex-row gap-6 text-gray-500">
+				<span>
+					github:{" "}
+					<a class:list={[linkClass, "underline"]} href={social.github.href}
+						>{social.github.handle}</a
+					>
+				</span>
+				<span>
+					x:{" "}
+					<a class:list={[linkClass, "underline"]} href={social.x.href}
+						>{social.x.handle}</a
+					>
+				</span>
+			</p>
+
+			<p class="mb-5 max-w-md">
+				i build fast web apps, dream about game design, and dabble into open
+				source.
+			</p>
+		</header>
+
+		<hr class="my-10 border-0 border-t border-neutral-200" />
+
+		<section class="space-y-3 pr-4">
+			<h2 class="text-lg font-semibold lowercase tracking-tight">about</h2>
+			<p>
+				Hi, I'm Kuba — a web developer focused on ux, full-stack, and the boring
+				infrastructure that makes products reliable.
+			</p>
+			<p class="text-gray-500">
+				Lately: diving deeper into self-hosting and monitoring, taming AI tools
+				for productivity maxxing.
+			</p>
+			<p class="text-gray-400 text-sm">
+				Outside of code: baking pizza, learning to ski, and playing board games.
+			</p>
+		</section>
+
+		<hr class="my-10 border-0 border-t border-neutral-200" />
+
+		<section class="space-y-3 pr-4">
+			<h2 class="text-lg lowercase tracking-tight">
+				<span class="font-semibold">product engineer</span> @ <a
+					class:list={[linkClass, "text-[#6736FF]"]}
+					href="https://rampnetwork.com"
+					target="_blank"
+					rel="noreferrer">ramp network</a
+				>
+			</h2>
+			<p class="flex flex-wrap">
+				<span>crypto exchange&nbsp;</span><span class="text-gray-500"
+					>// on-ramp, off-ramp, cross-chain swaps</span
+				>
+			</p>
+			<p class="flex flex-wrap">
+				<span>wallet app&nbsp;</span><span class="text-gray-500"
+					>// self-custody, multi-chain, everyday crypto</span
+				>
+			</p>
+			<p class="flex flex-wrap">
+				<span>stack&nbsp;</span><span class="text-gray-500"
+					>// react, nestjs, agile, ai</span
+				>
+			</p>
+			<p>since 2022</p>
+		</section>
+
+		<hr class="my-10 border-0 border-t border-neutral-200" />
+
+		<section class="space-y-3 pr-4">
+			<h2 class="text-lg font-semibold lowercase tracking-tight">
+				open source
+			</h2>
+			<ul class="mb-4 list-none space-y-5 p-0">
+				<li>
+					<h3>2025</h3>
+					<p class="mt-1 text-neutral-600">
+						contributions to <a
+							class:list={[linkClass]}
+							href="https://github.com/tanstack/router">tanstack router</a
+						> & <a class:list={[linkClass]} href="https://github.com/lingui"
+							>lingui</a
+						>,<br />sponsoring <a
+							class:list={[linkClass]}
+							href="https://github.com/open-circle/valibot">valibot</a
+						> & <a class:list={[linkClass]} href="https://github.com/Boshen"
+							>Boshen's work on oxc</a
+						>
+					</p>
+				</li>
+				<li>
+					<h3>2024</h3>
+					<p class="mt-1 text-neutral-600">
+						contributions to <a
+							class:list={[linkClass]}
+							href="https://github.com/eslint/eslint">eslint</a
+						>, <a
+							class:list={[linkClass]}
+							href="https://github.com/oxc-project/oxc">oxc</a
+						>
+					</p>
+				</li>
+				<li>
+					<h3>2023</h3>
+					<p class="mt-1 text-neutral-600">
+						<a
+							class:list={[linkClass]}
+							href="https://github.com/KubaJastrz/find-types">find types</a
+						> project
+					</p>
+				</li>
+			</ul>
+			<p>
+				more @ <a
+					class:list={[linkClass, "underline"]}
+					href={social.github.href}
+					>{social.github.href.replace(/https?:\/\//, "")}</a
+				>
+			</p>
+		</section>
+
+		<hr class="my-10 border-0 border-t border-neutral-200" />
+
+		<section class="space-y-3 pr-4">
+			<h2 class="text-lg font-semibold lowercase tracking-tight">contact</h2>
+			<p>
+				<ObfuscatedEmailLink class={linkClass} email="hello@kubajastrz.com" />
+			</p>
+			<p>
+				or dm on <a class={linkClass} href={social.linkedin.href}>linkedin</a>
+			</p>
+		</section>
+	</main>
 </Layout>
