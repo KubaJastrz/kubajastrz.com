@@ -1,0 +1,6 @@
+kubajastrz.com {
+	encode
+
+	respond /health 200
+	respond "hello world"
+}
