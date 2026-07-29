@@ -12,7 +12,13 @@ export default defineConfig({
 			provider: fontProviders.fontsource(),
 			name: "Geist Mono",
 			cssVariable: "--font-geist-mono",
-			weights: ["300 700"],
+			weights: ["400 700"],
+			unicodeRange: [
+				"U+0000-00FF", // Basic Latin + Latin-1 Supplement (English)
+				"U+0100-017F", // Latin Extended-A (Polish diacritics)
+				"U+2000-206F", // General Punctuation (em dash, etc.)
+			],
+			subsets: ["latin", "latin-ext"],
 		},
 	],
 
