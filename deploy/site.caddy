@@ -1,6 +1,12 @@
 kubajastrz.com {
 	encode
 
-	respond /health 200
-	respond "hello world"
+	handle /health {
+		respond 200
+	}
+
+	handle {
+		root * /etc/caddy/sites/kubajastrz-dist
+		file_server
+	}
 }
