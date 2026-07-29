@@ -31,8 +31,6 @@ jobs:
           mv dist deploy/dist
           test -f deploy/dist/index.html
 
-      - uses: kubajastrz/actions/login-ghcr@v2
-
       - uses: kubajastrz/actions/setup-vps-ssh@v2
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
