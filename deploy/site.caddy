@@ -6,7 +6,7 @@ kubajastrz.com {
 	}
 
 	handle {
-		root * /etc/caddy/sites/kubajastrz-dist
+		root * /etc/caddy/sites/kubajastrz-static
 		file_server
 	}
 }
