@@ -1,6 +1,7 @@
 ---
 import Head from "../components/head/base-head.astro";
 import ObfuscatedEmailLink from "../components/obfuscated-email-link.astro";
+import ScrambleText from "../components/scramble-text.astro";
 import Layout from "../layouts/base.astro";
 
 const social = {
@@ -30,9 +31,14 @@ const linkClass = "underline-offset-4 hover:opacity-60";
 
 	<main class="mx-auto max-w-3xl px-6 py-12 pb-16 text-base leading-relaxed">
 		<header>
-			<h1 class="mb-4 text-[1.75rem] font-semibold lowercase tracking-tight">
+			<h1
+				class="mb-4 text-[1.75rem] font-semibold lowercase tracking-tight"
+				aria-label="kuba jastrzębski"
+			>
 				<noscript>kuba jastrzębski</noscript>
-				<span class="jsonly">kuba jastrzębski</span>
+				<span class="jsonly" aria-hidden="true">
+					kuba <ScrambleText text="jastrzębski" />
+				</span>
 			</h1>
 
 			<p class="mb-5 flex flex-row gap-6 text-gray-500">

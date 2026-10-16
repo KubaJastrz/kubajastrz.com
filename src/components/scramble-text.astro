@@ -1,0 +1,124 @@
+---
+interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+
+const letters = "abcdefghijklmnopqrstuvwxyząćęłńóśźż";
+const signs = "!@#$%&*+=?/<>~^";
+const charset = letters + signs;
+
+/** Same length as the final text, so the heading doesn't jump before the script runs. */
+const placeholder = [...text]
+	.map((_, index) => charset[(index * 17 + 5) % charset.length])
+	.join("");
+---
+
+<span class="whitespace-nowrap" data-scramble={text} translate="no">{placeholder}</span>
+<script is:inline>
+	(function () {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		document.querySelectorAll("[data-scramble]").forEach(function (el) {
+			if (!(el instanceof HTMLElement) || el.dataset.settled != null) return;
+			el.textContent = el.dataset.scramble || "";
+			el.dataset.settled = "";
+		});
+	})();
+</script>
+<script>
+	const letters = "abcdefghijklmnopqrstuvwxyząćęłńóśźż";
+	const signs = "!@#$%&*+=?/<>~^";
+	const flipMs = 36;
+	let ready = false;
+
+	function randomGlyph(): string {
+		const pool = Math.random() < 0.68 ? letters : signs;
+		return pool[Math.floor(Math.random() * pool.length)]!;
+	}
+
+	function play(el: HTMLElement, text: string) {
+		if (!ready || el.dataset.running === "true") return;
+		el.dataset.running = "true";
+
+		const started = performance.now();
+		const glyphs = [...text].map((target, index) => {
+			const span = document.createElement("span");
+			span.className = "opacity-40";
+			span.textContent = randomGlyph();
+			// Step stays larger than the jitter so letters lock left to right.
+			return {
+				span,
+				target,
+				lockAt: started + 80 + index * 85 + Math.random() * 40,
+			};
+		});
+
+		el.replaceChildren(...glyphs.map((glyph) => glyph.span));
+
+		let lastFlip = 0;
+
+		const tick = (now: number) => {
+			if (el.dataset.running !== "true") return;
+
+			const flip = now - lastFlip >= flipMs;
+			if (flip) lastFlip = now;
+
+			let pending = 0;
+
+			for (const glyph of glyphs) {
+				if (glyph.span.dataset.locked === "true") continue;
+
+				if (now >= glyph.lockAt) {
+					glyph.span.textContent = glyph.target;
+					glyph.span.dataset.locked = "true";
+					glyph.span.classList.remove("opacity-40");
+					continue;
+				}
+
+				pending += 1;
+				const closeness = 1 - Math.min(1, (glyph.lockAt - now) / 240);
+				if (flip && Math.random() < 1 - closeness * 0.55) {
+					glyph.span.textContent = randomGlyph();
+				}
+			}
+
+			if (pending > 0) {
+				requestAnimationFrame(tick);
+				return;
+			}
+
+			el.textContent = text;
+			delete el.dataset.running;
+		};
+
+		requestAnimationFrame(tick);
+	}
+
+	async function whenReadyToPlay() {
+		await document.fonts.ready;
+		if (document.visibilityState === "visible") return;
+
+		await new Promise<void>((resolve) => {
+			const onChange = () => {
+				if (document.visibilityState !== "visible") return;
+				document.removeEventListener("visibilitychange", onChange);
+				resolve();
+			};
+			document.addEventListener("visibilitychange", onChange);
+		});
+	}
+
+	for (const node of document.querySelectorAll("[data-scramble]")) {
+		if (!(node instanceof HTMLElement) || node.dataset.settled != null) continue;
+
+		const text = node.dataset.scramble ?? "";
+		const start = () => play(node, text);
+
+		void whenReadyToPlay().then(() => {
+			ready = true;
+			start();
+		});
+		(node.closest("h1") ?? node).addEventListener("mouseenter", start);
+	}
+</script>
